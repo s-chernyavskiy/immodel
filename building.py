@@ -41,6 +41,7 @@ class Building:
 
     def simulate_day(self, day: int):
         steps_per_day = 24 * 60 // self.time_step
+        current_inlet_temp = self.inlet_temp
 
         for step in range(steps_per_day):
             current_time = day * 24 + step * self.time_step / 60
@@ -59,6 +60,13 @@ class Building:
 
                 volume = abs(self.norm_dist.distribute(config.normal_mean, config.normal_std))
                 total_demand += volume
+
+                if total_demand > 10:
+                    current_inlet_temp = max(40, current_inlet_temp - 0.5)
+                else:
+                    current_inlet_temp = min(60, current_inlet_temp + 0.2)
+
+                print(current_inlet_temp)
 
                 outlet_temp = apt.use_water(volume, self.inlet_temp)
                 temps.append(outlet_temp)
