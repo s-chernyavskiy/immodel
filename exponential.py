@@ -1,25 +1,28 @@
 import math
 
 from generator import Generator
+from config import config
 
 
 class ExponentialDistribution:
     def __init__(self, generator: Generator):
         self.g = generator
+        self.rates = config.rates_by_hour
 
     def distribute(self, rate: float) -> float:
         u = self.g.random()
         return -math.log(1 - u) / rate if rate > 0 else float('inf')
 
     def get_rate_by_hour(self, hour: int) -> float:
-        if 6 <= hour <= 9:
-            return 4.0
-        elif 18 <= hour <= 22:
-            return 3.0
-        elif 23 <= hour or hour <= 5:
-            return 0.1
+        rates = self.rates
+        if rates['morning_start'] <= hour <= rates['morning_end']:
+            return rates['morning_rate']
+        elif rates['evening_start'] <= hour <= rates['evening_end']:
+            return rates['evening_rate']
+        elif hour >= rates['night_start'] or hour <= rates['night_end']:
+            return rates['night_rate']
         else:
-            return 1.0
+            return rates['day_rate']
 
     def get_next_event_time(self, current_time: float) -> float:
         hour = int(current_time) % 24

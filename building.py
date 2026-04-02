@@ -4,11 +4,15 @@ from bernoulli import BernoulliDistribution
 from exponential import ExponentialDistribution
 from normal import NormalDistribution
 from poisson import PoissonDistribution
+from config import config
+
 
 class Building:
-    def __init__(self, num_apartments: int, boiler_probability: float,
-                 generator, time_step: int = 5):
-        self.num_apartments = num_apartments
+    def __init__(self, boiler_probability: float, generator, time_step: int = None):
+        if time_step is None:
+            time_step = config.time_step_minutes
+
+        self.num_apartments = config.num_apartments
         self.time_step = time_step
         self.g = generator
 
@@ -18,20 +22,20 @@ class Building:
         self.poisson_dist = PoissonDistribution(generator)
 
         self.apartments = []
-        for _ in range(num_apartments):
+        for _ in range(self.num_apartments):
             has_boiler = self.bernoulli.distribute(boiler_probability)
             self.apartments.append(Flat(has_boiler))
 
         self.pipe_diameter = 0.05
         self.pipe_length = 50
-        self.inlet_temp = 60.0
+        self.inlet_temp = config.inlet_temp
 
         self.temperatures = []
         self.pressures = []
         self.demands = []
 
     def calculate_pressure(self, total_demand: float) -> float:
-        max_demand = self.num_apartments * 0.5
+        max_demand = self.num_apartments * config.max_demand_per_apartment
         pressure = max(0, 1 - total_demand / max_demand)
         return pressure
 
@@ -53,7 +57,7 @@ class Building:
             for _ in range(num_openings):
                 apt = np.random.choice(self.apartments)
 
-                volume = abs(self.norm_dist.distribute(10, 5))
+                volume = abs(self.norm_dist.distribute(config.normal_mean, config.normal_std))
                 total_demand += volume
 
                 outlet_temp = apt.use_water(volume, self.inlet_temp)

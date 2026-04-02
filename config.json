@@ -1,0 +1,40 @@
+﻿{
+  "simulation": {
+    "num_apartments": 100,
+    "simulation_days": 100,
+    "time_step_minutes": 5
+  },
+  "temperature": {
+    "inlet_temp": 60.0,
+    "ambient_temp": 25.0,
+    "boiler_initial_temp": 70.0,
+    "boiler_heat_loss_per_step": 0.5,
+    "gost_requirement": 50,
+    "pressure_normal": 0.5
+  },
+  "water_consumption": {
+    "normal_mean": 10,
+    "normal_std": 5
+  },
+  "pressure": {
+    "max_demand_per_apartment": 0.5
+  },
+  "exponential": {
+    "rates_by_hour": {
+      "morning_start": 6,
+      "morning_end": 9,
+      "morning_rate": 4.0,
+      "evening_start": 18,
+      "evening_end": 22,
+      "evening_rate": 3.0,
+      "night_start": 23,
+      "night_end": 5,
+      "night_rate": 0.1,
+      "day_rate": 1.0
+    }
+  },
+  "plots": {
+    "figure_size": [10, 8],
+    "dpi": 100
+  }
+}
