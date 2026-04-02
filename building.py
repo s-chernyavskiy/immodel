@@ -3,6 +3,7 @@ from flat import Flat
 from bernoulli import BernoulliDistribution
 from exponential import ExponentialDistribution
 from normal import NormalDistribution
+from poisson import PoissonDistribution
 
 class Building:
     def __init__(self, num_apartments: int, boiler_probability: float,
@@ -14,6 +15,7 @@ class Building:
         self.bernoulli = BernoulliDistribution(generator)
         self.exp_dist = ExponentialDistribution(generator)
         self.norm_dist = NormalDistribution(generator)
+        self.poisson_dist = PoissonDistribution(generator)
 
         self.apartments = []
         for _ in range(num_apartments):
@@ -41,8 +43,9 @@ class Building:
             hour = int(current_time) % 24
 
             rate = self.exp_dist.get_rate_by_hour(hour)
+            lam = rate * self.time_step / 60
 
-            num_openings = np.random.poisson(rate * self.time_step / 60)
+            num_openings = self.poisson_dist.distribute(lam)
 
             total_demand = 0
             temps = []
