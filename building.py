@@ -53,7 +53,7 @@ class Building:
             for _ in range(num_openings):
                 apt = np.random.choice(self.apartments)
 
-                volume = abs(self.norm_dist.distribute(10, 5))  # литры
+                volume = abs(self.norm_dist.distribute(10, 5))
                 total_demand += volume
 
                 outlet_temp = apt.use_water(volume, self.inlet_temp)
