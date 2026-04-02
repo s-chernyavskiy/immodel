@@ -75,6 +75,6 @@ class Building:
 
             pressure = self.calculate_pressure(total_demand)
 
-            self.temperatures.append(np.mean(temps) if temps else self.inlet_temp)
+            self.temperatures.append(current_inlet_temp)
             self.pressures.append(pressure)
             self.demands.append(total_demand)
