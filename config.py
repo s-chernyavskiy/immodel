@@ -1,7 +1,7 @@
 ﻿import json
 import os
 
-class Config:
+class Config: # todo const P
     _instance = None
     _config = None
 

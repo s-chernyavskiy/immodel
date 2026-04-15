@@ -36,7 +36,7 @@ def main(boiler_probability: float):
     ax1.axhline(y=gost_requirement, color='r', linestyle='--', label='ГОСТ')
     ax1.set_title('Температура воды в течение дня')
     ax1.set_xlabel('Часы')
-    ax1.set_ylabel('Температура (°C)')
+    ax1.set_ylabel('Температура (градусов Цельсия)')
     ax1.legend()
     ax1.grid(True, alpha=0.3)
 
